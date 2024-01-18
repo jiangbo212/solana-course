@@ -4,6 +4,7 @@ import { AppBar } from '../components/AppBar'
 import Head from 'next/head'
 import { PingButton } from '../components/PingButton'
 import WalletContextProvider from '../components/WalletContextProvider'
+import { Transfer } from '../components/Transfer'
 
 const Home: NextPage = (props) => {
 
@@ -21,6 +22,7 @@ const Home: NextPage = (props) => {
         <div className={styles.AppBody}>
           <PingButton />
         </div>
+        <Transfer />
       </WalletContextProvider>
     </div>
   );

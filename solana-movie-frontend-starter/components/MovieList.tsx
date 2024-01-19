@@ -13,26 +13,38 @@ export const MovieList: FC = () => {
 
     useEffect(() => {
         connection.getProgramAccounts(new PublicKey(MOVIE_REVIEW_PROGRAM_ID), {
-            dataSlice: {offset: 2, length: 18},
+            dataSlice: { offset: 2, length: 18 },
             filters: [
                 {
                     memcmp: {
-                        offset: 1,
-                        bytes: base58.encode(Buffer.from('hello'))
+                        offset: 6,
+                        bytes: base58.encode(Buffer.from('te'))
                     }
                 }
             ]
-        }).then(async (accounts) => {
-            const movies: Movie[] = accounts.reduce((accum: Movie[], {account}) => {
-                const movie = Movie.deserialize(account.data);
-                if(!movie) {
+        }).then(async (orginalAccounts) => {
+            const paginatedPublicKeys = orginalAccounts.map(account => account.pubkey)
+            const accounts = await connection.getMultipleAccountsInfo(paginatedPublicKeys)
+
+            const movies = accounts.reduce((accum: Movie[], account) => {
+                const movie = Movie.deserialize(account?.data)
+                if (!movie) {
                     return accum
                 }
+
                 return [...accum, movie]
-            }, []);
+            }, [])
+
+            // const movies: Movie[] = accounts.reduce((accum: Movie[], {account}) => {
+            //     const movie = Movie.deserialize(account.data);
+            //     if(!movie) {
+            //         return accum
+            //     }
+            //     return [...accum, movie]
+            // }, []);
             setMovies(movies)
         })
-        
+
     }, [])
 
     return (

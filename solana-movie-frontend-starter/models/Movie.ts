@@ -17,10 +17,31 @@ export class Movie {
         borsh.str('description'),
     ])
 
+    static borshAccountSchema = borsh.struct([
+        borsh.bool('initialized'),
+        borsh.u8('rating'),
+        borsh.str('title'),
+        borsh.str('description'),
+    ])
+
     serialize(): Buffer {
         const buffer = Buffer.alloc(1000);
         this.borshInstuctionSchema.encode({...this, variant:0}, buffer);
         return buffer.slice(0, this.borshInstuctionSchema.getSpan(buffer));
+    }
+
+    static deserialize(buffer?: Buffer): Movie|null {
+        if(!buffer) {
+            return null;
+        }
+        try {
+            const {title, rating, description} = this.borshAccountSchema.decode(buffer);
+            console.log(title);
+            return new Movie(title, rating, description);
+        } catch(e) {
+            console.log(`Deserialization error ${e}, ${buffer}`);
+        }
+        return null;
     }
 
     static mocks: Movie[] = [

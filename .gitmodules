@@ -1,0 +1,3 @@
+[submodule "solana-spl-starter"]
+	path = solana-spl-starter
+	url = ./solana-spl-starter

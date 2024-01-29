@@ -60,7 +60,7 @@ class Movie {
 const transaction = new Transaction();
 const program_id = new PublicKey(process.env.MOVIE_REVIEW_ADDRESS || '');
 
-const movie = new Movie("测试movie review", 3, "movie review content， 看看就好");
+const movie = new Movie("测试movie review1", 4, "movie review content1， 看看就好1");
 
 const instruction = new TransactionInstruction({
     keys:[],
